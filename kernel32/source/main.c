@@ -2,6 +2,7 @@
 #include "page.h"
 #include "switch.h"
 #include "keyboard.h"
+#include "descriptor.h"
 
 void kprint_string(int iX, int iY, const char* string_addr);
 BOOL kinit_kernel_area(void);
@@ -44,18 +45,32 @@ void main(void)
 	kswitch_and_execute_kernel();
 	kprint_string(37, 6, "Pass");
 
+    kprint_string(0, 7, "GDT Initialize......................[    ]");
+    kinit_gdt_and_tss();
+    kload_gdtr(GDTR_STARTADDRESS);
+    kprint_string(37, 7, "Pass");
+
+    kprint_string(0, 8, "TSS Segment Load....................[    ]");
+    kload_tr(GDT_TSSSEGMENT);
+    kprint_string(37, 8, "Pass");
+
+    kprint_string(0, 9, "IDT Initialize......................[    ]");
+    kinit_idt_table();
+    kload_idtr(IDTR_STARTADDRESS);
+    kprint_string(37, 9, "Pass");
+
 	/*
 	 * KEYBOARD ACTIVATE ROUTINE
 	 */
-	kprint_string(0, 7, "Keyboard Activate...................[    ]");
+	kprint_string(0, 10, "Keyboard Activate...................[    ]");
 	if(kactivate_keyboard() == TRUE)
 	{
-		kprint_string(37, 7, "Pass");
+		kprint_string(37, 10, "Pass");
 		kchange_keyboard_led(FALSE, FALSE, FALSE);
 	}
 	else
 	{
-		kprint_string(37, 7, "Fail");
+		kprint_string(37, 10, "Fail");
 		while(1);
 	}
 
@@ -71,6 +86,11 @@ void main(void)
 				if(flags & KEY_FLAGS_DOWN)
 				{
 					kprint_string(i++, 13, vctemp);
+                    if(vctemp[0] == '0')
+                    {
+                        //divide by zero interrupt
+                        temp = temp / 0;
+                    }
 				}
 			}
 		}

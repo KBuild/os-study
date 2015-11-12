@@ -3,7 +3,7 @@
 SECTION .text
 
 ; use in C
-global kinport_byte, koutport_byte
+global kinport_byte, koutport_byte, kload_gdtr, kload_tr, kload_idtr
 
 ; read 1byte from port
 kinport_byte:
@@ -36,3 +36,45 @@ koutport_byte:
 	pop edx
 	pop ebp
 	ret
+
+; load GDTR register, set to GDT table
+kload_gdtr:
+	push ebp
+	mov ebp, esp
+
+    push eax
+
+    mov eax, dword[ebp+8]
+    lgdt[ eax ]
+
+    pop eax
+    pop ebp
+    ret
+
+; load TR register, set to TSS segment
+kload_tr:
+	push ebp
+	mov ebp, esp
+
+    push edi
+
+    mov edi, dword[ebp+8]
+    ltr di
+
+    pop edi
+    pop ebp
+    ret
+
+; load IDTR register, set to IDT table
+kload_idtr:
+	push ebp
+	mov ebp, esp
+
+    push eax
+
+    mov eax, dword[ebp+8]
+    lidt [ eax ]
+
+    pop eax
+    pop ebp
+    ret

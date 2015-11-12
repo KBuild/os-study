@@ -1,5 +1,9 @@
+descriptor.o: ../source/descriptor.c ../source/types.h \
+ ../source/descriptor.h
+utility.o: ../source/utility.c ../source/utility.h ../source/types.h \
+ ../source/asmutility.h
 main.o: ../source/main.c ../source/types.h ../source/page.h \
- ../source/switch.h ../source/keyboard.h
+ ../source/switch.h ../source/keyboard.h ../source/descriptor.h
 keyboard.o: ../source/keyboard.c ../source/types.h ../source/asmutility.h \
  ../source/keyboard.h
 page.o: ../source/page.c ../source/page.h ../source/types.h
