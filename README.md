@@ -1,5 +1,6 @@
 # os-study
-32bit os study project(original is 64bit, https://code.google.com/p/mint64os/)
+
+32bit os study project(original is 64bit, https://github.com/kkamagui/mint64os)
 
 64bit version is here "https://code.google.com/p/mint64os", made by kkamagui
 
